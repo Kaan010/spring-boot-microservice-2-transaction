@@ -8,25 +8,33 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author sa
+ * @date 17.04.2021
+ * @time 12:24
+ */
 @Service
-public class TransactionService {
+public class TransactionService implements ITransactionService
+{
+    @Autowired
+    private ITransactionRepository transactionRepository;
 
-    private final ITransactionRepository transactionRepository;
-
-    public TransactionService(ITransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
-
-    public Transaction saveTransaction(Transaction transaction){
+    @Override
+    public Transaction saveTransaction(Transaction transaction)
+    {
         transaction.setTransactionTime(LocalDateTime.now());
         return transactionRepository.save(transaction);
     }
 
-    public void deleteTransaction(Long transactionId){
+    @Override
+    public void deleteTransaction(Long transactionId)
+    {
         transactionRepository.deleteById(transactionId);
     }
 
-    public List<Transaction> findAllTransactionsOfUser(Long userId){
+    @Override
+    public List<Transaction> findAllTransactionsOfUser(Long userId)
+    {
         return transactionRepository.findAllByUserId(userId);
     }
 }
